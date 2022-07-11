@@ -1,0 +1,55 @@
+@startuml
+
+skinparam classAttributeIconSize 0
+
+
+
+abstract class CodeHandler {
++ next_Handler
+# handle_Code(code: String, door: Door)
+}
+
+class Door {
+- id : String
++ numTrials : int
++ locked : boolean
++ resetState()
++ processCode(code: String)
++ open()
+}
+
+class FireAlarm{
+- code : String
++ handle_Code(code: String, door: Door)
+}
+
+class Lock{
++ handle_Code(code: String, door: Door)
+}
+
+class Unlock{
+- code : String
++handle_Code(code: String, door: Door)
+}
+
+class Open{
+- code : String
++ next_Handler
++ handle_Code(code: String, door: Door)
+}
+
+class Log{
++handle_Code(code: String, door: Door)
+}
+
+Door -down-> "1" CodeHandler : handler
+CodeHandler -> "0,1" CodeHandler : next_Handler
+CodeHandler <|--down- Lock
+CodeHandler <|--down- Unlock
+CodeHandler <|--down- Log
+CodeHandler <|--down- Open
+CodeHandler <|--down- FireAlarm
+
+
+
+@enduml
